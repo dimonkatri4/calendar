@@ -1,17 +1,14 @@
 import React from 'react';
 import styled from "styled-components";
-import moment from "moment";
-
-interface PropsCalendarGrid {
-    startDay: moment.Moment
-}
+import {useSelector} from "react-redux";
+import {getDaysMap} from "../../store/selectors/dateSelectors";
 
 interface PropsCellWrapper {
     isWeekday: boolean
 }
 
 interface PropsRowInCell {
-    justifyContent ?: string
+    justifyContent?: string
 }
 
 
@@ -38,22 +35,21 @@ const RowInCell = styled.div<PropsRowInCell>`
 const DayWrapper = styled.div`
 	height: 31px;
 	width: 31px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 ;`
 
 
-const CalendarGrid = ({startDay}: PropsCalendarGrid) => {
-    const totalDays = 42;
-    const day = startDay.clone().subtract(1, 'day');
-    const daysMap = [...Array(totalDays)].map(() => day.add(1, 'day').clone())
+const CalendarGrid = () => {
+
+    const daysMap = useSelector(getDaysMap);
 
     return (
         <GridWrapper>
             {daysMap.map(dayItem => (
                 <CellWrapper
-                    key={dayItem.format('YYYY MM DD')}
+                    key={dayItem.unix()}
                     isWeekday={dayItem.day() === 6 || dayItem.day() === 0}
                 >
                     <RowInCell justifyContent={'flex-end'}>

@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import moment from "moment";
-
-interface PropsHeader {
-    today: moment.Moment
-}
+import {useSelector} from "react-redux";
+import {getSelectedDay} from "../../store/selectors/dateSelectors";
 
 const DivWrapper = styled('div')`
     display: flex;
@@ -44,12 +41,15 @@ const TodayButton = styled(ButtonWrapper)`
 `;
 
 
-const Header = ({today}: PropsHeader) => {
+const Header = () => {
+
+    const selectedDay = useSelector(getSelectedDay);
+
     return (
         <DivWrapper>
             <div>
-                <TitleWrapper>{today.format('MMM')}</TitleWrapper>
-                <TextWrapper>{today.format('YYYY')}</TextWrapper>
+                <TitleWrapper>{selectedDay.format('MMM')}</TitleWrapper>
+                <TextWrapper>{selectedDay.format('YYYY')}</TextWrapper>
             </div>
             <ButtonsWrapper>
                 <ButtonWrapper> &lt; </ButtonWrapper>
