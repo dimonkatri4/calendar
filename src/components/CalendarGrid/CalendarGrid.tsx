@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {getDaysMap} from "../../store/selectors/dateSelectors";
+import moment, {Moment} from 'moment';
 
 interface PropsCellWrapper {
     isWeekday: boolean
@@ -18,7 +19,19 @@ const GridWrapper = styled.div`
     grid-template-rows: repeat(6, 1fr);
     grid-gap: 1px;
     background-color: #4D4C4D;
+    margin: 2px;
 `;
+
+const CurrentDay = styled.div`
+  height: 100%;
+  width: 100%;
+  background: #f00;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 
 const CellWrapper = styled.div<PropsCellWrapper>`
 	min-height: 80px;
@@ -40,6 +53,7 @@ const DayWrapper = styled.div`
     justify-content: center;
 ;`
 
+const isCurrentDay = (day: Moment) => moment().isSame(day, 'day');
 
 const CalendarGrid = () => {
 
@@ -54,7 +68,9 @@ const CalendarGrid = () => {
                 >
                     <RowInCell justifyContent={'flex-end'}>
                         <DayWrapper>
-                            {dayItem.format('D')}
+                            {isCurrentDay(dayItem) ? <CurrentDay>{dayItem.format('D')}</CurrentDay> :
+                                dayItem.format('D')
+                            }
                         </DayWrapper>
                     </RowInCell>
                 </CellWrapper>
