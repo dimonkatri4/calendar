@@ -2,6 +2,9 @@ import React from 'react';
 import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {getSelectedDay} from "../../store/selectors/dateSelectors";
+import {useAppDispatch} from "../../hooks/redux";
+import { setSelectedDay } from '../../store/dateSlice';
+import moment from "moment";
 
 const DivWrapper = styled('div')`
     display: flex;
@@ -32,6 +35,8 @@ const ButtonWrapper = styled('button')`
 	margin-right: 2px;
 	border-radius: 4px;
 	color: #E6E6E6;
+	outline: unset;
+    cursor:pointer;
 `;
 
 const TodayButton = styled(ButtonWrapper)`
@@ -40,10 +45,14 @@ const TodayButton = styled(ButtonWrapper)`
 	font-weight: bold;
 `;
 
-
 const Header = () => {
 
+    const dispatch =useAppDispatch();
     const selectedDay = useSelector(getSelectedDay);
+
+    const prevHandler = () => dispatch(setSelectedDay(selectedDay.clone().subtract(1, 'month')));
+    const todayHandler = () => dispatch(setSelectedDay(moment()));
+    const nextHandler = () => dispatch(setSelectedDay(selectedDay.clone().add(1, 'month')));
 
     return (
         <DivWrapper>
@@ -52,9 +61,9 @@ const Header = () => {
                 <TextWrapper>{selectedDay.format('YYYY')}</TextWrapper>
             </div>
             <ButtonsWrapper>
-                <ButtonWrapper> &lt; </ButtonWrapper>
-                <TodayButton>Today</TodayButton>
-                <ButtonWrapper> &gt; </ButtonWrapper>
+                <ButtonWrapper onClick={prevHandler}> &lt; </ButtonWrapper>
+                <TodayButton onClick={todayHandler}>Today</TodayButton>
+                <ButtonWrapper onClick={nextHandler}> &gt; </ButtonWrapper>
             </ButtonsWrapper>
         </DivWrapper>
     );
