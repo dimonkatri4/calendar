@@ -1,7 +1,8 @@
 import {createSelector} from "@reduxjs/toolkit";
 import {RootState} from "../store";
+import {dateToMoment} from "../../helpers/helpers";
 
-export const getSelectedDay = (state: RootState) => state.date.selectedDay;
+export const getSelectedDay = (state: RootState) => dateToMoment(state.date.selectedDay);
 export const getTotalDays = (state: RootState) => state.date.totalDaysInCalendar;
 
 export const getStartDayInCalendar = createSelector(getSelectedDay, (selectedDay) => {

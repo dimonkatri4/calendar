@@ -5,6 +5,8 @@ import {getSelectedDay} from "../../store/selectors/dateSelectors";
 import {useAppDispatch} from "../../hooks/redux";
 import { setSelectedDay } from '../../store/dateSlice';
 import moment from "moment";
+import {dateToUnix} from "../../helpers/helpers";
+import { toggleIsActiveForm } from '../../store/eventsSlice';
 
 const DivWrapper = styled('div')`
     display: flex;
@@ -23,9 +25,10 @@ const TitleWrapper = styled(TextWrapper)`
   margin-right: 8px;
 `;
 
-const ButtonsWrapper = styled('div')`
+const BlockWrapper = styled('div')`
   display: flex;
   align-items: center;
+  justify-content: center; 
 `;
 
 const ButtonWrapper = styled('button')`
@@ -45,26 +48,47 @@ const TodayButton = styled(ButtonWrapper)`
 	font-weight: bold;
 `;
 
+const AddEventButton = styled(ButtonWrapper)`
+    margin-left: 15px;
+    font-size: 20px;
+    height: fit-content;
+`;
+
 const Header = () => {
 
     const dispatch =useAppDispatch();
     const selectedDay = useSelector(getSelectedDay);
 
-    const prevHandler = () => dispatch(setSelectedDay(selectedDay.clone().subtract(1, 'month')));
-    const todayHandler = () => dispatch(setSelectedDay(moment()));
-    const nextHandler = () => dispatch(setSelectedDay(selectedDay.clone().add(1, 'month')));
+    const prevHandler = () => {
+        const newDate = dateToUnix(selectedDay.clone().subtract(1, 'month'));
+        dispatch(setSelectedDay(newDate));
+    }
+    
+    const todayHandler = () => dispatch(setSelectedDay(dateToUnix(moment())));
+    
+    const nextHandler = () => {
+        const newDate = dateToUnix(selectedDay.clone().add(1, 'month'));
+        dispatch(setSelectedDay(newDate));
+    }
+
+    const openAddForm = () => {
+        dispatch(toggleIsActiveForm(true))
+    }
 
     return (
         <DivWrapper>
-            <div>
+            <BlockWrapper>
                 <TitleWrapper>{selectedDay.format('MMM')}</TitleWrapper>
                 <TextWrapper>{selectedDay.format('YYYY')}</TextWrapper>
-            </div>
-            <ButtonsWrapper>
+                <div>
+                    <AddEventButton onClick={openAddForm}>+</AddEventButton>
+                </div>
+            </BlockWrapper>
+            <BlockWrapper>
                 <ButtonWrapper onClick={prevHandler}> &lt; </ButtonWrapper>
                 <TodayButton onClick={todayHandler}>Today</TodayButton>
                 <ButtonWrapper onClick={nextHandler}> &gt; </ButtonWrapper>
-            </ButtonsWrapper>
+            </BlockWrapper>
         </DivWrapper>
     );
 };

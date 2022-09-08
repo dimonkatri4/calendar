@@ -3,25 +3,27 @@ import './App.css';
 import Header from "./Header/Header";
 import TitleWeeks from "./TitleWeeks/TitleWeeks";
 import CalendarGrid from "./CalendarGrid/CalendarGrid";
-import styled from 'styled-components';
+import {ShadowWrapper} from "../containers/styledComponents";
+import InputForm from "./InputForm/InputForm";
+import {useSelector} from "react-redux";
+import {getIsActiveForm} from "../store/selectors/eventsSelectors";
 
-const ShadowWrapper = styled('div')`
-  border-top: 1px solid #737374;
-  border-left: 1px solid #464648;
-  border-right: 1px solid #464648;
-  border-bottom: 2px solid #464648;
-  border-radius: 8px;
-  overflow:hidden;
-  box-shadow: 0 0 0 1px #1A1A1A, 0 8px 20px 6px #888;
-`;
 
 function App() {
+
+    const isActiveForm = useSelector(getIsActiveForm);
+
     return (
-        <ShadowWrapper>
-            <Header />
-            <TitleWeeks/>
-            <CalendarGrid />
-        </ShadowWrapper>
+        <>
+            {
+                isActiveForm ? <InputForm isActive={isActiveForm}/> : null
+            }
+            <ShadowWrapper>
+                <Header/>
+                <TitleWeeks/>
+                <CalendarGrid/>
+            </ShadowWrapper>
+        </>
     );
 }
 

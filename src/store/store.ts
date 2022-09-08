@@ -1,9 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import dateReducer from './dateSlice'
+import eventsReducer from './eventsSlice'
 
 export const store = configureStore({
     reducer: {
-        date: dateReducer
+        date: dateReducer,
+        events: eventsReducer
     }
 })
 

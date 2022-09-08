@@ -3,8 +3,10 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 moment.updateLocale('en', {week: {dow: 1}});
 
+window.moment = moment
+
 const initialState = {
-    selectedDay: moment(),
+    selectedDay: moment().format("X"),
     totalDaysInCalendar: 42
 }
 
@@ -12,7 +14,7 @@ export const dateSlice =createSlice({
     name: 'date',
     initialState,
     reducers: {
-        setSelectedDay: (state, action: PayloadAction<Moment>) => {
+        setSelectedDay: (state, action: PayloadAction<string>) => {
             state.selectedDay = action.payload
         },
     }

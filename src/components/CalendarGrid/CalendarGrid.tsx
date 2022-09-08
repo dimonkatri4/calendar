@@ -1,41 +1,29 @@
 import React from 'react';
-import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {getDaysMap, getSelectedDay} from "../../store/selectors/dateSelectors";
-import {CellWrapper, RowInCell} from "../../containers/styledComponents";
+import {
+    CellWrapper,
+    CurrentDay,
+    DayWrapper, EventItemWrapper, EventListWrapper,
+    GridWrapper,
+    RowInCell,
+    ShowDayWrapper
+} from "../../containers/styledComponents";
 import {isCurrentDay, isSelectedMonth} from "../../helpers/helpers";
-
-const GridWrapper = styled.div`
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    grid-gap: 1px;
-    background-color: #4D4C4D;
-`;
-
-const CurrentDay = styled.div`
-  height: 100%;
-  width: 100%;
-  background: #f00;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const DayWrapper = styled.div`
-	height: 31px;
-	width: 31px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 2px;
-;`
+import {getEvents} from "../../store/selectors/eventsSelectors";
+import {toggleIsActiveForm} from "../../store/eventsSlice";
+import {useAppDispatch} from "../../hooks/redux";
 
 const CalendarGrid = () => {
 
     const daysMap = useSelector(getDaysMap);
     const selectedDay = useSelector(getSelectedDay);
+    const events = useSelector(getEvents);
+    const dispatch = useAppDispatch();
+
+    const openAddForm = () => {
+        dispatch(toggleIsActiveForm(true))
+    }
 
     return (
         <GridWrapper>
@@ -46,11 +34,26 @@ const CalendarGrid = () => {
                     isSelectedMonth={isSelectedMonth(dayItem, selectedDay)}
                 >
                     <RowInCell justifyContent={'flex-end'}>
-                        <DayWrapper>
-                            {isCurrentDay(dayItem) ? <CurrentDay>{dayItem.format('D')}</CurrentDay> :
-                                dayItem.format('D')
+                        <ShowDayWrapper>
+                            <DayWrapper>
+                                {isCurrentDay(dayItem) ? <CurrentDay>{dayItem.format('D')}</CurrentDay> :
+                                    dayItem.format('D')
+                                }
+                            </DayWrapper>
+                        </ShowDayWrapper>
+                        <EventListWrapper>
+                            {
+                                events.filter(event => event.date >= dayItem.format('X') &&
+                                    event.date <= dayItem.clone().endOf('day').format('X'))
+                                    .map(event => (
+                                        <li key={event.id}>
+                                            <EventItemWrapper onClick={openAddForm}>
+                                                {event.title}
+                                            </EventItemWrapper>
+                                        </li>
+                                    ))
                             }
-                        </DayWrapper>
+                        </EventListWrapper>
                     </RowInCell>
                 </CellWrapper>
 
