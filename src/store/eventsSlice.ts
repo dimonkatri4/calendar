@@ -15,7 +15,7 @@ interface UpdateEvent {
 const initialState = {
     events: [] as IEvent[],
     isActiveForm: false,
-    idChangeEvent: null as number | null
+    idChangeEvent: 0
 }
 
 const createNewEvent = (title: string, description: string, date: string, id: number) => (
@@ -34,7 +34,7 @@ export const eventsSlice = createSlice({
         toggleIsActiveForm: (state, action: PayloadAction<boolean>) => {
             state.isActiveForm = action.payload
         },
-        setIdChangeEvent: (state, action: PayloadAction<number | null>) => {
+        setIdChangeEvent: (state, action: PayloadAction<number>) => {
             state.idChangeEvent = action.payload
         },
         updateEvent: (state, action:PayloadAction<UpdateEvent>) => {

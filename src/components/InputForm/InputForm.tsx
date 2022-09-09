@@ -23,32 +23,20 @@ const InputForm = () => {
     const dispatch = useAppDispatch();
     const idChangeEvent = useSelector(getIdChangeEvent);
     const events = useSelector(getEvents);
+    const changeEvent = (events.filter(e => e.id === idChangeEvent))[0];
+    const {title, description, date} = changeEvent;
+    const dateD = date ? dateToMoment(changeEvent.date).format("YYYY-MM-DD") : '';
+    const time = date ? dateToMoment(changeEvent.date).format("HH:mm") : '';
 
     const closeForm = () => {
-        if (idChangeEvent !== null && events[idChangeEvent].date === '') {
-            dispatch(deleteEvent(idChangeEvent));
-        }
-        dispatch(setIdChangeEvent(null));
+        date === '' && dispatch(deleteEvent(idChangeEvent));
         dispatch(toggleIsActiveForm(false));
     }
 
     const removeEvent = () => {
-        idChangeEvent !== null && dispatch(deleteEvent(idChangeEvent));
-        dispatch(setIdChangeEvent(null));
+        dispatch(deleteEvent(idChangeEvent));
         dispatch(toggleIsActiveForm(false));
     }
-
-    const defaultEvent = {
-        title: '',
-        description: '',
-        date: '',
-        time: ''
-    }
-
-    const changeEvent = idChangeEvent !== null ? (events.filter(e => e.id === idChangeEvent))[0] : defaultEvent;
-    const {title, description, date} = changeEvent;
-    const dateD = date ? dateToMoment(changeEvent.date).format("YYYY-MM-DD") : '';
-    const time = date ? dateToMoment(changeEvent.date).format("HH:mm") : '';
 
     return (
         <FormPositionWrapper onClick={closeForm}>
@@ -68,14 +56,13 @@ const InputForm = () => {
                         const fullDate = (`${date} ${time}`);
                         const unixFullDate = moment(fullDate, "YYYY-MM-DD HH:mm").format("X");
                         dispatch(updateEvent({
-                            id: idChangeEvent !== null ? idChangeEvent : 0,
+                            id: idChangeEvent,
                             data: {
                                 title,
                                 description,
                                 date: unixFullDate
                             }
                         }))
-                        dispatch(setIdChangeEvent(null));
                         dispatch(toggleIsActiveForm(false));
                     }}>
                     <Form>
@@ -84,7 +71,7 @@ const InputForm = () => {
                         <MyTextInput style={{textAlign: 'center'}} name='date' type='date' />
                         <MyTextInput style={{textAlign: 'center'}} name='time' type='time' />
                         <ButtonsWrapper>
-                            <ButtonInForm type='submit'>Submit</ButtonInForm>
+                            <ButtonInForm type='submit'>Save</ButtonInForm>
                             <ButtonInForm type='button' onClick={closeForm}>Close</ButtonInForm>
                             {date && <ButtonInForm onClick={removeEvent}>Delete</ButtonInForm> }
                         </ButtonsWrapper>

@@ -10,7 +10,7 @@ import {
     ShowDayWrapper
 } from "../../containers/styledComponents";
 import {isCurrentDay, isSelectedMonth} from "../../helpers/helpers";
-import {getEvents, getIdChangeEvent, getIsActiveForm} from "../../store/selectors/eventsSelectors";
+import {getEvents, getIsActiveForm} from "../../store/selectors/eventsSelectors";
 import {setIdChangeEvent, toggleIsActiveForm} from "../../store/eventsSlice";
 import {useAppDispatch} from "../../hooks/redux";
 import InputForm from "../InputForm/InputForm";
@@ -22,7 +22,6 @@ const CalendarGrid = () => {
     const events = useSelector(getEvents);
     const dispatch = useAppDispatch();
     const isActiveForm = useSelector(getIsActiveForm);
-    const idChangeEvent = useSelector(getIdChangeEvent);
 
     const openAddForm = (idEvent: number) => {
         dispatch(setIdChangeEvent(idEvent))
