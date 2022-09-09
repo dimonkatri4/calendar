@@ -49,7 +49,7 @@ export function MyTextInput({style ,...props}: FieldHookConfig<string>) {
     const hasError = !!(meta.touched && meta.error)
     return (
         <div>
-            <InputBlock>
+            <InputBlock title={props.title}>
                 {hasError && <ErrorSpan hasError={hasError}>{meta.error}</ErrorSpan>}
                 <EventInput
                     hasError={hasError}
@@ -68,7 +68,7 @@ export function MyTextarea({...props}: FieldHookConfig<string>) {
     const hasError = !!(meta.touched && meta.error)
     return (
         <div>
-            <InputBlock>
+            <InputBlock title={props.title}>
                 {hasError && <ErrorSpan hasError={hasError}>{meta.error}</ErrorSpan>}
                 <EventTextarea
                     hasError={hasError}

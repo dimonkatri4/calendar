@@ -3,20 +3,20 @@ import React from 'react';
 import {useAppDispatch} from "../../hooks/redux";
 import {useSelector} from "react-redux";
 import {getEvents, getIdChangeEvent} from "../../store/selectors/eventsSelectors";
-import {updateEvent, deleteEvent, setIdChangeEvent, toggleIsActiveForm} from "../../store/eventsSlice";
+import {updateEvent, deleteEvent, toggleIsActiveForm} from "../../store/eventsSlice";
 import moment from "moment";
 import {dateToMoment} from "../../helpers/helpers";
-import {FormPositionWrapper, FormWrapper, ButtonsWrapper} from "./styledInputForm";
+import {FormPositionWrapper, FormWrapper, ButtonsWrapper, ButtonInForm} from "./styledInputForm";
 import {MyTextarea, MyTextInput} from "../common/FormikFormsBuild/FormikFormsBuild";
 import * as Yup from 'yup';
-import {ButtonWrapper} from "../../containers/styledComponents";
 import styled from "styled-components";
 
-const ButtonInForm = styled(ButtonWrapper)`
-    height: 25px;
-    margin-right: 10px;
+const DateChangeWrapper = styled('div')`
+    border-bottom: 1px solid #464648;
+    padding: 5px 15px;
+    font-size: .7rem;
+    color: grey;
 `;
-
 
 const InputForm = () => {
 
@@ -24,9 +24,11 @@ const InputForm = () => {
     const idChangeEvent = useSelector(getIdChangeEvent);
     const events = useSelector(getEvents);
     const changeEvent = (events.filter(e => e.id === idChangeEvent))[0];
-    const {title, description, date} = changeEvent;
-    const dateD = date ? dateToMoment(changeEvent.date).format("YYYY-MM-DD") : '';
+    const {title, description, date, countChanges, dateCreate, dateUpdate} = changeEvent;
+    const dateFormat = date ? dateToMoment(changeEvent.date).format("YYYY-MM-DD") : '';
     const time = date ? dateToMoment(changeEvent.date).format("HH:mm") : '';
+    const dateCreateNormalFormat = dateToMoment(dateCreate).format('YYYY-MM-DD HH:mm');
+    const dateUpdateNormalFormat = dateUpdate ? dateToMoment(dateUpdate).format('YYYY-MM-DD HH:mm') : '';
 
     const closeForm = () => {
         date === '' && dispatch(deleteEvent(idChangeEvent));
@@ -41,11 +43,15 @@ const InputForm = () => {
     return (
         <FormPositionWrapper onClick={closeForm}>
             <FormWrapper onClick={e => e.stopPropagation()}>
+                {countChanges !== 0 ? <DateChangeWrapper>
+                    {countChanges >= 1 && <div>Create at: {dateCreateNormalFormat}</div>}
+                    {countChanges >= 2 && <div>Update at: {dateUpdateNormalFormat}</div>}
+                </DateChangeWrapper> : null}
                 <Formik
                     initialValues={{
                         title,
                         description,
-                        date: dateD,
+                        date: dateFormat,
                         time
                     }}
                     validationSchema={Yup.object({
@@ -60,20 +66,20 @@ const InputForm = () => {
                             data: {
                                 title,
                                 description,
-                                date: unixFullDate
+                                date: unixFullDate,
                             }
                         }))
                         dispatch(toggleIsActiveForm(false));
                     }}>
                     <Form>
-                        <MyTextInput name='title' type='text' placeholder='Title' />
-                        <MyTextarea name='description' placeholder='Description' />
-                        <MyTextInput style={{textAlign: 'center'}} name='date' type='date' />
-                        <MyTextInput style={{textAlign: 'center'}} name='time' type='time' />
+                        <MyTextInput name='title' type='text' placeholder='Title' title='Title'/>
+                        <MyTextarea name='description' placeholder='Description' title='Description'/>
+                        <MyTextInput style={{textAlign: 'center'}} name='date' type='date'/>
+                        <MyTextInput style={{textAlign: 'center'}} name='time' type='time'/>
                         <ButtonsWrapper>
                             <ButtonInForm type='submit'>Save</ButtonInForm>
                             <ButtonInForm type='button' onClick={closeForm}>Close</ButtonInForm>
-                            {date && <ButtonInForm onClick={removeEvent}>Delete</ButtonInForm> }
+                            {date && <ButtonInForm onClick={removeEvent}>Delete</ButtonInForm>}
                         </ButtonsWrapper>
                     </Form>
                 </Formik>

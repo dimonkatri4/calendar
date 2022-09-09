@@ -1,16 +1,23 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {currentDate} from "../helpers/helpers";
 
 export interface IEvent {
     title: string
     description: string
     date: string
     id: number
-}
+    countChanges: number
+    dateCreate: string
+    dateUpdate: string | null
+};
+
+type DateFromForm = Omit<IEvent, 'id' | 'countChanges' | 'dateCreate' | 'dateUpdate'>;
 
 interface UpdateEvent {
     id:number,
-    data: Omit<IEvent, 'id'>
+    data: DateFromForm
 }
+
 
 const initialState = {
     events: [] as IEvent[],
@@ -18,18 +25,27 @@ const initialState = {
     idChangeEvent: 0
 }
 
-const createNewEvent = (title: string, description: string, date: string, id: number) => (
-    {title, description, date, id}
+const createNewEvent = (title: string,
+                        description: string,
+                        date: string,
+                        id: number,
+                        countChanges: number,
+                        dateCreate: string,
+                        dateUpdate: string | null
+                        ) => (
+    {title, description, date, id, countChanges, dateCreate, dateUpdate}
 )
 
 export const eventsSlice = createSlice({
     name: 'events',
     initialState,
     reducers: {
-        addNewEvent: (state, action: PayloadAction<Omit<IEvent, 'id'>>) => {
-            const {title, description, date} = action.payload
-            const newEvent = createNewEvent(title, description, date, state.events.length)
-            state.events = [...state.events, newEvent]
+        addNewEvent: (state, action: PayloadAction<DateFromForm>) => {
+            const {title, description, date} = action.payload;
+            const dateCreate = currentDate();
+            const newEvent = createNewEvent(title, description, date,
+                state.events.length, 0, dateCreate, null )
+            state.events = [...state.events, newEvent];
         },
         toggleIsActiveForm: (state, action: PayloadAction<boolean>) => {
             state.isActiveForm = action.payload
@@ -44,6 +60,8 @@ export const eventsSlice = createSlice({
                     event.title = title;
                     event.description = description;
                     event.date = date;
+                    event.countChanges += 1;
+                    event.dateUpdate = currentDate()
                 }
                 return event;
             })

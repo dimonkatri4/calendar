@@ -1,12 +1,13 @@
-import moment, {Moment} from "moment";
+import moment from "moment";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {currentDate} from "../helpers/helpers";
 
 moment.updateLocale('en', {week: {dow: 1}});
 
 window.moment = moment
 
 const initialState = {
-    selectedDay: moment().format("X"),
+    selectedDay: currentDate(),
     totalDaysInCalendar: 42
 }
 

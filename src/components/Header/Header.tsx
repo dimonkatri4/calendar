@@ -65,8 +65,7 @@ const Header = () => {
     }
 
     const openAddForm = () => {
-        dispatch(addNewEvent({title: '', description: '', date: ''}));
-        /* const idLastEvent = events.length === 0 ? 0 : events[events.length - 1].id; */
+        dispatch(addNewEvent({title: '', description: '', date: '', }));
         dispatch(setIdChangeEvent(events.length));
         dispatch(toggleIsActiveForm(true));
     }
