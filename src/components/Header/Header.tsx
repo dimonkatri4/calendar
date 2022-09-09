@@ -3,10 +3,12 @@ import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {getSelectedDay} from "../../store/selectors/dateSelectors";
 import {useAppDispatch} from "../../hooks/redux";
-import { setSelectedDay } from '../../store/dateSlice';
+import {setSelectedDay} from '../../store/dateSlice';
 import moment from "moment";
 import {dateToUnix} from "../../helpers/helpers";
-import { toggleIsActiveForm } from '../../store/eventsSlice';
+import {addNewEvent, setIdChangeEvent, toggleIsActiveForm} from '../../store/eventsSlice';
+import {getEvents} from "../../store/selectors/eventsSelectors";
+import { ButtonWrapper } from '../../containers/styledComponents';
 
 const DivWrapper = styled('div')`
     display: flex;
@@ -31,16 +33,6 @@ const BlockWrapper = styled('div')`
   justify-content: center; 
 `;
 
-const ButtonWrapper = styled('button')`
-    border: unset;
-	background-color: #565759;
-	height: 20px;
-	margin-right: 2px;
-	border-radius: 4px;
-	color: #E6E6E6;
-	outline: unset;
-    cursor:pointer;
-`;
 
 const TodayButton = styled(ButtonWrapper)`
     padding-right: 16px;
@@ -56,23 +48,27 @@ const AddEventButton = styled(ButtonWrapper)`
 
 const Header = () => {
 
-    const dispatch =useAppDispatch();
+    const dispatch = useAppDispatch();
     const selectedDay = useSelector(getSelectedDay);
+    const events = useSelector(getEvents);
 
     const prevHandler = () => {
         const newDate = dateToUnix(selectedDay.clone().subtract(1, 'month'));
         dispatch(setSelectedDay(newDate));
     }
-    
+
     const todayHandler = () => dispatch(setSelectedDay(dateToUnix(moment())));
-    
+
     const nextHandler = () => {
         const newDate = dateToUnix(selectedDay.clone().add(1, 'month'));
         dispatch(setSelectedDay(newDate));
     }
 
     const openAddForm = () => {
-        dispatch(toggleIsActiveForm(true))
+        dispatch(addNewEvent({title: '', description: '', date: ''}));
+        /* const idLastEvent = events.length === 0 ? 0 : events[events.length - 1].id; */
+        dispatch(setIdChangeEvent(events.length));
+        dispatch(toggleIsActiveForm(true));
     }
 
     return (

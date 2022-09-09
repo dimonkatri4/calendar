@@ -90,3 +90,15 @@ export const ShadowWrapper = styled('div')`
   box-shadow: 0 0 0 1px #1A1A1A, 0 8px 20px 6px #888;
 `;
 
+export const ButtonWrapper = styled('button')`
+    border: unset;
+	background-color: #565759;
+	height: 20px;
+	margin-right: 2px;
+	border-radius: 4px;
+	color: #E6E6E6;
+	outline: unset;
+    cursor:pointer;
+`;
+
+

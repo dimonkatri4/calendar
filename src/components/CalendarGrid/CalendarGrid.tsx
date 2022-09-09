@@ -10,9 +10,10 @@ import {
     ShowDayWrapper
 } from "../../containers/styledComponents";
 import {isCurrentDay, isSelectedMonth} from "../../helpers/helpers";
-import {getEvents} from "../../store/selectors/eventsSelectors";
-import {toggleIsActiveForm} from "../../store/eventsSlice";
+import {getEvents, getIdChangeEvent, getIsActiveForm} from "../../store/selectors/eventsSelectors";
+import {setIdChangeEvent, toggleIsActiveForm} from "../../store/eventsSlice";
 import {useAppDispatch} from "../../hooks/redux";
+import InputForm from "../InputForm/InputForm";
 
 const CalendarGrid = () => {
 
@@ -20,12 +21,17 @@ const CalendarGrid = () => {
     const selectedDay = useSelector(getSelectedDay);
     const events = useSelector(getEvents);
     const dispatch = useAppDispatch();
+    const isActiveForm = useSelector(getIsActiveForm);
+    const idChangeEvent = useSelector(getIdChangeEvent);
 
-    const openAddForm = () => {
+    const openAddForm = (idEvent: number) => {
+        dispatch(setIdChangeEvent(idEvent))
         dispatch(toggleIsActiveForm(true))
     }
 
     return (
+        <>
+            {isActiveForm ? <InputForm /> : null}
         <GridWrapper>
             {daysMap.map(dayItem => (
                 <CellWrapper
@@ -47,7 +53,7 @@ const CalendarGrid = () => {
                                     event.date <= dayItem.clone().endOf('day').format('X'))
                                     .map(event => (
                                         <li key={event.id}>
-                                            <EventItemWrapper onClick={openAddForm}>
+                                            <EventItemWrapper onClick={() => openAddForm(event.id)}>
                                                 {event.title}
                                             </EventItemWrapper>
                                         </li>
@@ -59,6 +65,7 @@ const CalendarGrid = () => {
 
             ))}
         </GridWrapper>
+            </>
     );
 };
 

@@ -1,101 +1,95 @@
-import React, {useEffect, useState} from 'react';
-import styled from "styled-components";
-import {ShadowWrapper} from "../../containers/styledComponents";
+import {Form, Formik} from 'formik';
+import React from 'react';
 import {useAppDispatch} from "../../hooks/redux";
+import {useSelector} from "react-redux";
+import {getEvents, getIdChangeEvent} from "../../store/selectors/eventsSelectors";
+import {updateEvent, deleteEvent, setIdChangeEvent, toggleIsActiveForm} from "../../store/eventsSlice";
 import moment from "moment";
-import { setEvents, toggleIsActiveForm } from '../../store/eventsSlice';
+import {dateToMoment} from "../../helpers/helpers";
+import {FormPositionWrapper, FormWrapper, ButtonsWrapper} from "./styledInputForm";
+import {MyTextarea, MyTextInput} from "../common/FormikFormsBuild/FormikFormsBuild";
+import * as Yup from 'yup';
+import {ButtonWrapper} from "../../containers/styledComponents";
+import styled from "styled-components";
 
-interface Props {
-    isActive: boolean
-}
-
-const FormPositionWrapper = styled('div')`
-  position: absolute;
-  z-index: 100;
-  background-color: rgba(0, 0, 0, 0.35);
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const FormWrapper = styled(ShadowWrapper)`
-  width: 200px;
-  //height: 300px;
-  background-color: #1E1F21;
-  color: #DDDDDD;
-  box-shadow:unset;
-`;
-
-const EventTitle = styled('input')`
-  padding: 4px 14px;
-  font-size: .85rem;
-  width: 100%;
-  border: unset;
-  background-color: #1E1F21;
-  color: #DDDDDD;
-  outline: unset;
-  border-bottom: 1px solid #464648;
-`;
-
-const EventBody = styled('textarea')`
-  padding: 4px 14px;
-  font-size: .85rem;
-  width: 100%;
-  border: unset;
-  background-color: #1E1F21;
-  color: #DDDDDD;
-  outline: unset;
-  border-bottom: 1px solid #464648;
-`;
-
-const ButtonsWrapper = styled('div')`
-  padding: 8px 14px;
-  display: flex;
-  justify-content: flex-end;
+const ButtonInForm = styled(ButtonWrapper)`
+    height: 25px;
+    margin-right: 10px;
 `;
 
 
-const InputForm = ({isActive}: Props) => {
+const InputForm = () => {
+
     const dispatch = useAppDispatch();
-    const [date, setDate] = useState<string>('')
-    const [time, setTime] = useState<string>('')
-    const [title, setTitle] = useState<string>('')
-    const [description, setDescription] = useState<string>('')
+    const idChangeEvent = useSelector(getIdChangeEvent);
+    const events = useSelector(getEvents);
 
     const closeForm = () => {
-        dispatch(toggleIsActiveForm(false))
+        if (idChangeEvent !== null && events[idChangeEvent].date === '') {
+            dispatch(deleteEvent(idChangeEvent));
+        }
+        dispatch(setIdChangeEvent(null));
+        dispatch(toggleIsActiveForm(false));
     }
 
-    const handleSubmit = () => {
-        const fullDate = (`${date} ${time}`);
-        const unixFullDate = moment(fullDate, "YYYY-MM-DD HH:mm").format("X");
-        dispatch(setEvents({title, description, date: unixFullDate}));
+    const removeEvent = () => {
+        idChangeEvent !== null && dispatch(deleteEvent(idChangeEvent));
+        dispatch(setIdChangeEvent(null));
+        dispatch(toggleIsActiveForm(false));
     }
+
+    const defaultEvent = {
+        title: '',
+        description: '',
+        date: '',
+        time: ''
+    }
+
+    const changeEvent = idChangeEvent !== null ? (events.filter(e => e.id === idChangeEvent))[0] : defaultEvent;
+    const {title, description, date} = changeEvent;
+    const dateD = date ? dateToMoment(changeEvent.date).format("YYYY-MM-DD") : '';
+    const time = date ? dateToMoment(changeEvent.date).format("HH:mm") : '';
 
     return (
         <FormPositionWrapper onClick={closeForm}>
             <FormWrapper onClick={e => e.stopPropagation()}>
-                <EventTitle
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder='Title'
-                    required
-                />
-                <EventBody
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder='Description'
-                />
-                <EventTitle value={date} required type={"date"} onChange={(e) => setDate(e.target.value)}/>
-                <EventTitle value={time} type={"time"} onChange={(e) => setTime(e.target.value)}/>
-                <ButtonsWrapper>
-                    <button onClick={closeForm}>Cancel</button>
-                    <button onClick={handleSubmit}>Create</button>
-                </ButtonsWrapper>
+                <Formik
+                    initialValues={{
+                        title,
+                        description,
+                        date: dateD,
+                        time
+                    }}
+                    validationSchema={Yup.object({
+                        title: Yup.string().required("Title is required"),
+                        date: Yup.string().required("Select date")
+                    })}
+                    onSubmit={({title, description, date, time}) => {
+                        const fullDate = (`${date} ${time}`);
+                        const unixFullDate = moment(fullDate, "YYYY-MM-DD HH:mm").format("X");
+                        dispatch(updateEvent({
+                            id: idChangeEvent !== null ? idChangeEvent : 0,
+                            data: {
+                                title,
+                                description,
+                                date: unixFullDate
+                            }
+                        }))
+                        dispatch(setIdChangeEvent(null));
+                        dispatch(toggleIsActiveForm(false));
+                    }}>
+                    <Form>
+                        <MyTextInput name='title' type='text' placeholder='Title' />
+                        <MyTextarea name='description' placeholder='Description' />
+                        <MyTextInput style={{textAlign: 'center'}} name='date' type='date' />
+                        <MyTextInput style={{textAlign: 'center'}} name='time' type='time' />
+                        <ButtonsWrapper>
+                            <ButtonInForm type='submit'>Submit</ButtonInForm>
+                            <ButtonInForm type='button' onClick={closeForm}>Close</ButtonInForm>
+                            {date && <ButtonInForm onClick={removeEvent}>Delete</ButtonInForm> }
+                        </ButtonsWrapper>
+                    </Form>
+                </Formik>
             </FormWrapper>
         </FormPositionWrapper>
     );
