@@ -66,13 +66,16 @@ export const EventListWrapper = styled('ul')`
 
 export const EventItemWrapper = styled('button')`
 	position: relative;
+	flex-grow: 1;
 	left: -14px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 	width: 114px;
-	border: unset;
-	background: unset;
+	color: rgb(221, 221, 221);
+	border: 1px solid rgb(93, 95, 99);
+	border-radius: 2px;
+	background-color: rgb(93, 95, 99);
 	color: #DDDDDD;
 	cursor: pointer;
 	margin: 0;
@@ -99,6 +102,14 @@ export const ButtonWrapper = styled('button')`
 	color: #E6E6E6;
 	outline: unset;
     cursor:pointer;
+`;
+
+export const DivWrapper = styled('div')`
+    display: flex;
+    justify-content: space-between;
+    background-color: #1E1F21;
+	color: #DCDDDD;
+	padding: 16px;
 `;
 
 

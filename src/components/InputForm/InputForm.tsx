@@ -6,17 +6,9 @@ import {getEvents, getIdChangeEvent} from "../../store/selectors/eventsSelectors
 import {updateEvent, deleteEvent, toggleIsActiveForm} from "../../store/eventsSlice";
 import moment from "moment";
 import {dateToMoment} from "../../helpers/helpers";
-import {FormPositionWrapper, FormWrapper, ButtonsWrapper, ButtonInForm} from "./styledInputForm";
+import {FormPositionWrapper, FormWrapper, ButtonsWrapper, ButtonInForm, DateChangeWrapper} from "./styledInputForm";
 import {MyTextarea, MyTextInput} from "../common/FormikFormsBuild/FormikFormsBuild";
 import * as Yup from 'yup';
-import styled from "styled-components";
-
-const DateChangeWrapper = styled('div')`
-    border-bottom: 1px solid #464648;
-    padding: 5px 15px;
-    font-size: .7rem;
-    color: grey;
-`;
 
 const InputForm = () => {
 

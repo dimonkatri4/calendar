@@ -31,3 +31,10 @@ export const ButtonInForm = styled(ButtonWrapper)`
     height: 25px;
     margin-right: 10px;
 `;
+
+export const DateChangeWrapper = styled('div')`
+    border-bottom: 1px solid #464648;
+    padding: 5px 15px;
+    font-size: .7rem;
+    color: grey;
+`;

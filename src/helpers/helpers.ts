@@ -8,4 +8,4 @@ export const dateToUnix = (date: Moment):string => date.format("X");
 
 export const dateToMoment = (date: string):Moment => moment(date, "X");
 
-export const currentDate = ():string => moment().format("X")
+export const currentDate = ():string => moment().format("X");
