@@ -1,4 +1,4 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import {
     persistStore,
     persistReducer,
@@ -8,22 +8,22 @@ import {
     PERSIST,
     PURGE,
     REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+} from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import dateReducer from './dateSlice'
 import eventsReducer from './eventsSlice'
 
 const persistConfig = {
     key: 'root',
     storage,
-};
+}
 
 const rootReducer = combineReducers({
     date: dateReducer,
-    events: eventsReducer
-});
+    events: eventsReducer,
+})
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
     reducer: persistedReducer,
@@ -33,10 +33,10 @@ export const store = configureStore({
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
         }),
-});
+})
 
-export const persistor = persistStore(store);
-export default store;
+export const persistor = persistStore(store)
+export default store
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
