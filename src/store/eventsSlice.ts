@@ -1,15 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {currentDate} from "../helpers/helpers";
-
-export interface IEvent {
-    title: string
-    description: string
-    date: string
-    id: number
-    countChanges: number
-    dateCreate: string
-    dateUpdate: string | null
-};
+import {IEvent} from "../types/IEvents";
 
 type DateFromForm = Omit<IEvent, 'id' | 'countChanges' | 'dateCreate' | 'dateUpdate'>;
 
@@ -17,7 +8,6 @@ interface UpdateEvent {
     id:number,
     data: DateFromForm
 }
-
 
 const initialState = {
     events: [] as IEvent[],
