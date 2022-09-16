@@ -1,18 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {currentDate} from "../helpers/helpers";
-import {IEvent} from "../types/IEvents";
-
-type DateFromForm = Omit<IEvent, 'id' | 'countChanges' | 'dateCreate' | 'dateUpdate'>;
-
-interface UpdateEvent {
-    id:number,
-    data: DateFromForm
-}
+import {INewEventData, IEvent, IUpdateEvent} from "../types/IEvents";
 
 const initialState = {
     events: [] as IEvent[],
     isActiveForm: false,
-    idChangeEvent: 0
+    idChangeEvent: 0,
+    isFetching: false,
 }
 
 const createNewEvent = (title: string,
@@ -30,7 +24,10 @@ export const eventsSlice = createSlice({
     name: 'events',
     initialState,
     reducers: {
-        addNewEvent: (state, action: PayloadAction<DateFromForm>) => {
+        setEvents: (state, action:PayloadAction<IEvent[]>) => {
+          state.events = action.payload
+        },
+        addNewEvent: (state, action: PayloadAction<INewEventData>) => {
             const {title, description, date} = action.payload;
             const dateCreate = currentDate();
             const newEvent = createNewEvent(title, description, date,
@@ -43,7 +40,7 @@ export const eventsSlice = createSlice({
         setIdChangeEvent: (state, action: PayloadAction<number>) => {
             state.idChangeEvent = action.payload
         },
-        updateEvent: (state, action:PayloadAction<UpdateEvent>) => {
+        updateEvent: (state, action:PayloadAction<IUpdateEvent>) => {
             const {description, title, date} = action.payload.data;
             state.events.map(event => {
                 if (event.id === action.payload.id) {
@@ -58,9 +55,12 @@ export const eventsSlice = createSlice({
         },
         deleteEvent: (state, action: PayloadAction<number>) => {
             state.events = state.events.filter(e => e.id !== action.payload)
-        }
+        },
+        toggleIsFetching: (state, action: PayloadAction<boolean>) => {
+            state.isFetching = action.payload
+        },
     }
 })
 
-export const {addNewEvent, toggleIsActiveForm, setIdChangeEvent, deleteEvent,updateEvent} = eventsSlice.actions
+export const {addNewEvent, toggleIsActiveForm, setIdChangeEvent, deleteEvent,updateEvent, setEvents, toggleIsFetching} = eventsSlice.actions
 export default eventsSlice.reducer

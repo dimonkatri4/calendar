@@ -7,3 +7,10 @@ export interface IEvent {
     dateCreate: string
     dateUpdate: string | null
 };
+
+export type INewEventData = Omit<IEvent, 'id' | 'countChanges' | 'dateCreate' | 'dateUpdate'>;
+
+export interface IUpdateEvent {
+    id:number,
+    data: INewEventData
+}
