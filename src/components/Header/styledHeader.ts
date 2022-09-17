@@ -34,3 +34,11 @@ export const AddEventButton = styled(ButtonWrapper)`
 export const ImgWrapper = styled('img') `
     height: 4vh;
 `;
+
+export const DivWrapper = styled('div')`
+    display: flex;
+    justify-content: space-between;
+    background-color: #1E1F21;
+	color: #DCDDDD;
+	padding: 0 16px;
+`;

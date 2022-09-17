@@ -12,7 +12,7 @@ interface PropsRowInCell {
 }
 
 export const CellWrapper = styled.div<PropsCellWrapper>`
-	min-height: ${props => props.isTitleWeeks ? 20 : 80}px;
+	min-height: ${props => props.isTitleWeeks ? 20 : 93}px;
 	min-width: 140px;
 	background-color: ${props => props.isWeekday ? '#27282A' : '#1E1F21'};
 	color: ${props => props.isSelectedMonth ? '#DDDDDD' : '#555759'};
@@ -104,12 +104,5 @@ export const ButtonWrapper = styled('button')`
     cursor:pointer;
 `;
 
-export const DivWrapper = styled('div')`
-    display: flex;
-    justify-content: space-between;
-    background-color: #1E1F21;
-	color: #DCDDDD;
-	padding: 16px;
-`;
 
 

@@ -1,24 +1,16 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { useSelector } from 'react-redux'
-import { getSelectedDay } from '../../store/selectors/dateSelectors'
-import { useAppDispatch } from '../../hooks/redux'
-import { setSelectedDay } from '../../store/dateSlice'
+import React, {useState} from 'react'
+import {useSelector} from 'react-redux'
+import {getSelectedDay} from '../../store/selectors/dateSelectors'
+import {useAppDispatch} from '../../hooks/redux'
+import {setSelectedDay} from '../../store/dateSlice'
 import moment from 'moment'
-import { dateToUnix } from '../../helpers/helpers'
-import { addNewEvent, setIdChangeEvent, toggleIsActiveForm } from '../../store/eventsSlice'
-import { getEvents } from '../../store/selectors/eventsSelectors'
-import { ButtonWrapper, DivWrapper } from '../../containers/styledComponents'
+import {dateToUnix} from '../../helpers/helpers'
+import {addNewEvent, setIdChangeEvent, toggleIsActiveForm} from '../../store/eventsSlice'
+import {getEvents} from '../../store/selectors/eventsSelectors'
+import {ButtonWrapper} from '../../containers/styledComponents'
 import Datepicker from '../Datepicker/Datepicker'
 import calendarIcon from '../../assets/icons/calendar-icon.png'
-import {
-    AddEventButton,
-    BlockWrapper,
-    ImgWrapper,
-    TextWrapper,
-    TitleWrapper,
-    TodayButton,
-} from './styledHeader'
+import {AddEventButton, BlockWrapper, DivWrapper, ImgWrapper, TextWrapper, TitleWrapper, TodayButton,} from './styledHeader'
 
 const Header = () => {
     const dispatch = useAppDispatch()
