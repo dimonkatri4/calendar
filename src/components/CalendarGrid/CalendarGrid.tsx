@@ -1,12 +1,13 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import {getDaysMap, getSelectedDay} from '../../store/selectors/dateSelectors'
+import {getDaysMap, getIsShowDay, getSelectedDay} from '../../store/selectors/dateSelectors'
 import {GridWrapper,} from '../../containers/styledComponents'
 import {getEvents, getIsActiveForm} from '../../store/selectors/eventsSelectors'
 import {setIdChangeEvent, toggleIsActiveForm} from '../../store/eventsSlice'
 import {useAppDispatch} from '../../hooks/redux'
 import InputForm from '../InputForm/InputForm'
 import CalendarCell from "../CalendarCell/CalendarCell";
+import EventsInDay from "../EventsInDay/EventsInDay";
 
 const CalendarGrid = () => {
     const daysMap = useSelector(getDaysMap)
@@ -14,6 +15,7 @@ const CalendarGrid = () => {
     const events = useSelector(getEvents)
     const dispatch = useAppDispatch()
     const isActiveForm = useSelector(getIsActiveForm)
+    const isShowDay = useSelector(getIsShowDay)
 
     const openAddForm = (idEvent: number) => {
         dispatch(setIdChangeEvent(idEvent))
@@ -23,16 +25,17 @@ const CalendarGrid = () => {
     return (
         <>
             {isActiveForm ? <InputForm /> : null}
-            <GridWrapper>
+            {!isShowDay ? <GridWrapper>
                 {daysMap.map((dayItem) => (
                     <CalendarCell
                         key={dayItem.unix()}
                         dayItem={dayItem}
                         selectedDay={selectedDay}
                         events={events}
-                        openAddForm={openAddForm} />
+                        openAddForm={openAddForm}/>
                 ))}
             </GridWrapper>
+               : <EventsInDay />}
         </>
     )
 }

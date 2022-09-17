@@ -2,6 +2,8 @@ import React from 'react';
 import {EventItemWrapper, EventListWrapper} from "../../containers/styledComponents";
 import {IEvent} from "../../types/IEvents";
 import styled from "styled-components";
+import {useAppDispatch} from "../../hooks/redux";
+import { setIsShowDay } from '../../store/dateSlice';
 
 interface Props {
     events: IEvent[]
@@ -15,8 +17,13 @@ const EventListItemWrapper = styled('li')`
 	display: flex;
 `;
 
-
 const Events = ({events, openAddForm}: Props) => {
+
+    const dispatch = useAppDispatch()
+    const showEventsInDay = () => {
+        dispatch(setIsShowDay(true))
+    }
+
     return (
         <EventListWrapper>
             {events
@@ -31,7 +38,7 @@ const Events = ({events, openAddForm}: Props) => {
             {
                 events.length > 2 ? (
                     <EventListItemWrapper key="show more">
-                        <EventItemWrapper >
+                        <EventItemWrapper onClick={showEventsInDay}>
                             show more...
                         </EventItemWrapper>
                     </EventListItemWrapper>

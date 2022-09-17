@@ -6,6 +6,7 @@ export const getSelectedDay = (state: RootState) => dateToMoment(state.date.sele
 export const getTotalDays = (state: RootState) => state.date.totalDaysInCalendar
 export const getMonthsMap = (state: RootState) => state.date.monthsMap
 export const getYearsMap = (state: RootState) => state.date.yearsMap
+export const getIsShowDay = (state: RootState) => state.date.isShowDay
 
 export const getStartDayInCalendar = createSelector(getSelectedDay, (selectedDay) => {
     return selectedDay.clone().startOf('month').startOf('week')

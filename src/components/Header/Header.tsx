@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
 import {getSelectedDay} from '../../store/selectors/dateSelectors'
 import {useAppDispatch} from '../../hooks/redux'
-import {setSelectedDay} from '../../store/dateSlice'
+import {setSelectedDay, setIsShowDay} from '../../store/dateSlice'
 import moment from 'moment'
 import {dateToUnix} from '../../helpers/helpers'
 import {addNewEvent, setIdChangeEvent, toggleIsActiveForm} from '../../store/eventsSlice'
@@ -11,6 +11,21 @@ import {ButtonWrapper} from '../../containers/styledComponents'
 import Datepicker from '../Datepicker/Datepicker'
 import calendarIcon from '../../assets/icons/calendar-icon.png'
 import {AddEventButton, BlockWrapper, DivWrapper, ImgWrapper, TextWrapper, TitleWrapper, TodayButton,} from './styledHeader'
+import styled from "styled-components";
+
+
+const ButtonsWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+`;
+
+const ButtonsCenterWrapper = styled(ButtonsWrapper)`
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%,-50%);
+`;
+
 
 const Header = () => {
     const dispatch = useAppDispatch()
@@ -40,6 +55,10 @@ const Header = () => {
         dispatch(toggleIsActiveForm(true))
     }
 
+    const setDisplayMode = (value: boolean) => {
+        dispatch(setIsShowDay(value))
+    }
+
     return (
         <DivWrapper>
             <BlockWrapper>
@@ -49,6 +68,10 @@ const Header = () => {
                     <AddEventButton onClick={openAddForm}>+</AddEventButton>
                 </div>
             </BlockWrapper>
+            <ButtonsWrapper>
+                <ButtonWrapper onClick={() => setDisplayMode(false)}>Month</ButtonWrapper>
+                <ButtonWrapper onClick={() => setDisplayMode(true)}>Day</ButtonWrapper>
+            </ButtonsWrapper>
             <BlockWrapper direction="column">
                 <div>
                     <ButtonWrapper onClick={prevHandler}> &lt; </ButtonWrapper>

@@ -26,6 +26,7 @@ const initialState = {
     totalDaysInCalendar: 42,
     monthsMap: getMonths(),
     yearsMap: getYears(),
+    isShowDay: false
 }
 
 export const dateSlice = createSlice({
@@ -35,9 +36,12 @@ export const dateSlice = createSlice({
         setSelectedDay: (state, action: PayloadAction<string>) => {
             state.selectedDay = action.payload
         },
+        setIsShowDay: (state, action: PayloadAction<boolean>) => {
+            state.isShowDay = action.payload
+        }
     },
 })
 
-export const { setSelectedDay } = dateSlice.actions
+export const { setSelectedDay, setIsShowDay } = dateSlice.actions
 
 export default dateSlice.reducer
