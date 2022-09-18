@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const baseURL = 'https://baseUrl/';
-const headersConfig = {};
+const baseURL = 'https://baseUrl/'
+const headersConfig = {}
 
 export const instance = axios.create({
     baseURL,
     headers: headersConfig,
-});
+})

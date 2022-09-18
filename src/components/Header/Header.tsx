@@ -1,32 +1,45 @@
-import React, {useState} from 'react'
-import {useSelector} from 'react-redux'
-import {getIsShowDay, getSelectedDay} from '../../store/selectors/dateSelectors'
-import {useAppDispatch} from '../../hooks/redux'
-import {setSelectedDay, setIsShowDay} from '../../store/dateSlice'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { getIsShowDay, getSelectedDay } from '../../store/selectors/dateSelectors'
+import { useAppDispatch } from '../../hooks/redux'
+import { setSelectedDay, setIsShowDay } from '../../store/dateSlice'
 import moment from 'moment'
-import {dateToUnix} from '../../helpers/helpers'
-import {addNewEvent, setIdChangeEvent, toggleIsActiveForm} from '../../store/eventsSlice'
-import {getEvents} from '../../store/selectors/eventsSelectors'
-import {ButtonWrapper} from '../../containers/styledComponents'
+import { dateToUnix } from '../../helpers/helpers'
+import { addNewEvent, setIdChangeEvent, toggleIsActiveForm } from '../../store/eventsSlice'
+import { getEvents } from '../../store/selectors/eventsSelectors'
+import { ButtonWrapper } from '../../containers/styledComponents'
 import Datepicker from '../Datepicker/Datepicker'
 import calendarIcon from '../../assets/icons/calendar-icon.png'
-import {AddEventButton, BlockWrapper, DivWrapper, ImgWrapper, TextWrapper, TitleWrapper, TodayButton,} from './styledHeader'
-import styled from "styled-components";
+import {
+    AddEventButton,
+    BlockWrapper,
+    DivWrapper,
+    ImgWrapper,
+    TextWrapper,
+    TitleWrapper,
+    TodayButton,
+} from './styledHeader'
+import styled from 'styled-components'
 
 interface PropsToggleDayMonth {
-    isShowDay: boolean
+    isShowDay: boolean;
 }
 
 const ButtonsWrapper = styled('div')`
-  display: flex;
-  align-items: center;
-`;
+    display: flex;
+    align-items: center;
+`
 
-const ToggleDayMonth = styled(ButtonWrapper)<PropsToggleDayMonth>`
+const ToggleDayMonth =
+    styled(ButtonWrapper) <
+    PropsToggleDayMonth >
+    `
     min-width: 70px;
     margin-right: 5px;
-    ${props => props.isShowDay && 'background-color: rgb(39, 40, 42); color: rgb(164, 166, 169); cursor: default'};
-`;
+    ${(props) =>
+        props.isShowDay &&
+        'background-color: rgb(39, 40, 42); color: rgb(164, 166, 169); cursor: default'};
+`
 
 const Header = () => {
     const dispatch = useAppDispatch()
@@ -77,8 +90,20 @@ const Header = () => {
                 </div>
             </BlockWrapper>
             <ButtonsWrapper>
-                <ToggleDayMonth isShowDay={!isShowDay} onClick={() => setDisplayMode(false)} disabled={!isShowDay}>Month</ToggleDayMonth>
-                <ToggleDayMonth isShowDay={isShowDay} onClick={() => setDisplayMode(true)} disabled={isShowDay}>Day</ToggleDayMonth>
+                <ToggleDayMonth
+                    isShowDay={!isShowDay}
+                    onClick={() => setDisplayMode(false)}
+                    disabled={!isShowDay}
+                >
+                    Month
+                </ToggleDayMonth>
+                <ToggleDayMonth
+                    isShowDay={isShowDay}
+                    onClick={() => setDisplayMode(true)}
+                    disabled={isShowDay}
+                >
+                    Day
+                </ToggleDayMonth>
             </ButtonsWrapper>
             <BlockWrapper direction="column">
                 <div>

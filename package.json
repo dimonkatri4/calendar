@@ -21,6 +21,7 @@
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.5",
     "typescript": "^4.4.2",
+    "usehooks-ts": "^2.6.0",
     "web-vitals": "^2.1.0",
     "yup": "^0.32.11"
   },
@@ -28,7 +29,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.tsx src/**/*.ts",
+    "lint-fix": "eslint src/**/*.tsx src/**/*.ts --fix",
+    "prettier": "prettier -w src/**/*.tsx src/**/*.ts"
   },
   "eslintConfig": {
     "extends": [

@@ -1,13 +1,13 @@
-import React from 'react';
-import {CurrentDay, DayWrapper, ShowDayWrapper} from "../../containers/styledComponents";
-import {isCurrentDay} from "../../helpers/helpers";
-import {Moment} from "moment";
+import React from 'react'
+import { CurrentDay, DayWrapper, ShowDayWrapper } from '../../containers/styledComponents'
+import { isCurrentDay } from '../../helpers/helpers'
+import { Moment } from 'moment'
 
 interface Props {
-    dayItem: Moment
+    dayItem: Moment;
 }
 
-const DayInCell = ({dayItem}: Props) => {
+const DayInCell = ({ dayItem }: Props) => {
     return (
         <ShowDayWrapper>
             <DayWrapper>
@@ -18,7 +18,7 @@ const DayInCell = ({dayItem}: Props) => {
                 )}
             </DayWrapper>
         </ShowDayWrapper>
-    );
-};
+    )
+}
 
-export default DayInCell;
+export default DayInCell

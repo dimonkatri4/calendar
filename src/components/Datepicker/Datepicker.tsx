@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from 'react'
-import { Field, Form, Formik } from 'formik'
-import { useSelector } from 'react-redux'
-import { getMonthsMap, getSelectedDay, getYearsMap } from '../../store/selectors/dateSelectors'
+import React, {useRef} from 'react'
+import {Field, Form, Formik} from 'formik'
+import {useSelector} from 'react-redux'
+import {getMonthsMap, getSelectedDay, getYearsMap} from '../../store/selectors/dateSelectors'
 import moment from 'moment'
-import { useAppDispatch } from '../../hooks/redux'
-import { setSelectedDay } from '../../store/dateSlice'
+import {useAppDispatch} from '../../hooks/redux'
+import {setSelectedDay} from '../../store/dateSlice'
 import styled from 'styled-components'
+import {useOnClickOutside} from 'usehooks-ts'
 
 const DatepickerWrapper = styled('div')`
     margin-top: 5px;
@@ -23,23 +24,11 @@ const Datepicker = ({ setState }: Props) => {
     const selectedYear = selectedDay.format('YYYY')
     const selectedMonth = selectedDay.format('MMMM')
 
-    const useOutsideClick = (ref: React.RefObject<HTMLInputElement>) => {
-        useEffect(() => {
-            const handleClickOutside = (e: any) => {
-                if (ref.current) {
-                    if (!ref.current.contains(e.target)) {
-                        setState(false)
-                    }
-                }
-            }
-            document.addEventListener('mousedown', handleClickOutside)
-            return () => {
-                document.removeEventListener('mousedown', handleClickOutside)
-            }
-        }, [ref])
-    }
     const wrapperRef = useRef(null)
-    useOutsideClick(wrapperRef)
+    const handleClickOutside = () => {
+        setState(false)
+    }
+    useOnClickOutside(wrapperRef, handleClickOutside)
 
     return (
         <DatepickerWrapper ref={wrapperRef}>

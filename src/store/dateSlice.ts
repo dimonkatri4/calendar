@@ -26,7 +26,7 @@ const initialState = {
     totalDaysInCalendar: 42,
     monthsMap: getMonths(),
     yearsMap: getYears(),
-    isShowDay: false
+    isShowDay: false,
 }
 
 export const dateSlice = createSlice({
@@ -38,7 +38,7 @@ export const dateSlice = createSlice({
         },
         setIsShowDay: (state, action: PayloadAction<boolean>) => {
             state.isShowDay = action.payload
-        }
+        },
     },
 })
 

@@ -1,13 +1,13 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {getDaysMap, getIsShowDay, getSelectedDay} from '../../store/selectors/dateSelectors'
-import {GridWrapper,} from '../../containers/styledComponents'
-import {getEvents, getIsActiveForm} from '../../store/selectors/eventsSelectors'
-import {setIdChangeEvent, toggleIsActiveForm} from '../../store/eventsSlice'
-import {useAppDispatch} from '../../hooks/redux'
+import { useSelector } from 'react-redux'
+import { getDaysMap, getIsShowDay, getSelectedDay } from '../../store/selectors/dateSelectors'
+import { GridWrapper } from '../../containers/styledComponents'
+import { getEvents, getIsActiveForm } from '../../store/selectors/eventsSelectors'
+import { setIdChangeEvent, toggleIsActiveForm } from '../../store/eventsSlice'
+import { useAppDispatch } from '../../hooks/redux'
 import InputForm from '../InputForm/InputForm'
-import CalendarCell from "../CalendarCell/CalendarCell";
-import EventsInDay from "../EventsInDay/EventsInDay";
+import CalendarCell from '../CalendarCell/CalendarCell'
+import EventsInDay from '../EventsInDay/EventsInDay'
 
 const CalendarGrid = () => {
     const daysMap = useSelector(getDaysMap)
@@ -25,17 +25,21 @@ const CalendarGrid = () => {
     return (
         <>
             {isActiveForm ? <InputForm /> : null}
-            {!isShowDay ? <GridWrapper>
-                {daysMap.map((dayItem) => (
-                    <CalendarCell
-                        key={dayItem.unix()}
-                        dayItem={dayItem}
-                        selectedDay={selectedDay}
-                        events={events}
-                        openAddForm={openAddForm}/>
-                ))}
-            </GridWrapper>
-               : <EventsInDay openAddForm={openAddForm} />}
+            {!isShowDay ? (
+                <GridWrapper>
+                    {daysMap.map((dayItem) => (
+                        <CalendarCell
+                            key={dayItem.unix()}
+                            dayItem={dayItem}
+                            selectedDay={selectedDay}
+                            events={events}
+                            openAddForm={openAddForm}
+                        />
+                    ))}
+                </GridWrapper>
+            ) : (
+                <EventsInDay openAddForm={openAddForm} />
+            )}
         </>
     )
 }
