@@ -1,10 +1,11 @@
 import React from 'react';
 import {IEvent} from "../../types/IEvents";
 import {dateToMoment, dayContainCurrentEvent} from "../../helpers/helpers";
-import {Moment} from "moment";
 import {
-    DayShowWrapper, EventItemButton,
-    EventsListWrapper, ScaleCellEventWrapper,
+    DayShowWrapper,
+    EventItemButton,
+    EventsListWrapper,
+    ScaleCellEventWrapper,
     ScaleCellTimeWrapper,
     ScaleCellWrapper,
     ScaleWrapper
@@ -13,7 +14,11 @@ import {useSelector} from "react-redux";
 import {getSelectedDay} from "../../store/selectors/dateSelectors";
 import {getEvents} from "../../store/selectors/eventsSelectors";
 
-const EventsInDay = () => {
+interface Props {
+    openAddForm: (idEvent: number) => void
+}
+
+const EventsInDay = ({openAddForm}: Props) => {
 
     const selectedDay = useSelector(getSelectedDay)
     const events = useSelector(getEvents)
@@ -48,7 +53,7 @@ const EventsInDay = () => {
                                 <ScaleCellEventWrapper>
                                     {
                                         eventsList.map(event => (
-                                            <EventItemButton key={event.id}>
+                                            <EventItemButton key={event.id} onClick={() => openAddForm(event.id)}>
                                                 {event.title}
                                             </EventItemButton>
                                         ))

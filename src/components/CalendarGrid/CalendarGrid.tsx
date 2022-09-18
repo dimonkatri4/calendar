@@ -35,7 +35,7 @@ const CalendarGrid = () => {
                         openAddForm={openAddForm}/>
                 ))}
             </GridWrapper>
-               : <EventsInDay />}
+               : <EventsInDay openAddForm={openAddForm} />}
         </>
     )
 }

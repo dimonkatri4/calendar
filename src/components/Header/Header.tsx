@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
-import {getSelectedDay} from '../../store/selectors/dateSelectors'
+import {getIsShowDay, getSelectedDay} from '../../store/selectors/dateSelectors'
 import {useAppDispatch} from '../../hooks/redux'
 import {setSelectedDay, setIsShowDay} from '../../store/dateSlice'
 import moment from 'moment'
@@ -13,39 +13,43 @@ import calendarIcon from '../../assets/icons/calendar-icon.png'
 import {AddEventButton, BlockWrapper, DivWrapper, ImgWrapper, TextWrapper, TitleWrapper, TodayButton,} from './styledHeader'
 import styled from "styled-components";
 
+interface PropsToggleDayMonth {
+    isShowDay: boolean
+}
 
 const ButtonsWrapper = styled('div')`
   display: flex;
   align-items: center;
 `;
 
-const ButtonsCenterWrapper = styled(ButtonsWrapper)`
-  position: absolute;
-  top: 50%;
-  right: 50%;
-  transform: translate(50%,-50%);
+const ToggleDayMonth = styled(ButtonWrapper)<PropsToggleDayMonth>`
+    min-width: 70px;
+    margin-right: 5px;
+    ${props => props.isShowDay && 'background-color: rgb(39, 40, 42); color: rgb(164, 166, 169); cursor: default'};
 `;
-
 
 const Header = () => {
     const dispatch = useAppDispatch()
     const selectedDay = useSelector(getSelectedDay)
     const events = useSelector(getEvents)
     const [isDatepicker, setIsDatepicker] = useState(false)
+    const isShowDay = useSelector(getIsShowDay)
+
+    const prevNextValue = isShowDay ? 'day' : 'month'
 
     const setState = (value: boolean) => {
         setIsDatepicker(value)
     }
 
     const prevHandler = () => {
-        const newDate = dateToUnix(selectedDay.clone().subtract(1, 'month'))
+        const newDate = dateToUnix(selectedDay.clone().subtract(1, prevNextValue))
         dispatch(setSelectedDay(newDate))
     }
 
     const todayHandler = () => dispatch(setSelectedDay(dateToUnix(moment())))
 
     const nextHandler = () => {
-        const newDate = dateToUnix(selectedDay.clone().add(1, 'month'))
+        const newDate = dateToUnix(selectedDay.clone().add(1, prevNextValue))
         dispatch(setSelectedDay(newDate))
     }
 
@@ -56,12 +60,16 @@ const Header = () => {
     }
 
     const setDisplayMode = (value: boolean) => {
+        {
+            value === true && todayHandler()
+        }
         dispatch(setIsShowDay(value))
     }
 
     return (
         <DivWrapper>
             <BlockWrapper>
+                {isShowDay ? <TitleWrapper>{selectedDay.format('DD')}</TitleWrapper> : null}
                 <TitleWrapper>{selectedDay.format('MMM')}</TitleWrapper>
                 <TextWrapper>{selectedDay.format('YYYY')}</TextWrapper>
                 <div>
@@ -69,8 +77,8 @@ const Header = () => {
                 </div>
             </BlockWrapper>
             <ButtonsWrapper>
-                <ButtonWrapper onClick={() => setDisplayMode(false)}>Month</ButtonWrapper>
-                <ButtonWrapper onClick={() => setDisplayMode(true)}>Day</ButtonWrapper>
+                <ToggleDayMonth isShowDay={!isShowDay} onClick={() => setDisplayMode(false)} disabled={!isShowDay}>Month</ToggleDayMonth>
+                <ToggleDayMonth isShowDay={isShowDay} onClick={() => setDisplayMode(true)} disabled={isShowDay}>Day</ToggleDayMonth>
             </ButtonsWrapper>
             <BlockWrapper direction="column">
                 <div>

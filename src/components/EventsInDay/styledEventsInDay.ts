@@ -38,7 +38,7 @@ export const ScaleCellTimeWrapper = styled('div')`
 `;
 
 export const ScaleCellEventWrapper = styled('div')`
-  min-height: 16px;
+  min-height: 22px;
 `;
 
 export const EventItemButton = styled('button')`
