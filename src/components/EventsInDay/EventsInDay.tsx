@@ -15,7 +15,7 @@ import { getSelectedDay } from '../../store/selectors/dateSelectors'
 import { getEvents } from '../../store/selectors/eventsSelectors'
 
 interface Props {
-    openAddForm: (idEvent: number) => void
+    openAddForm: (idEvent: number) => void;
 }
 
 const EventsInDay = ({ openAddForm }: Props) => {

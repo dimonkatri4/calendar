@@ -1,12 +1,12 @@
-import React, {useRef} from 'react'
-import {Field, Form, Formik} from 'formik'
-import {useSelector} from 'react-redux'
-import {getMonthsMap, getSelectedDay, getYearsMap} from '../../store/selectors/dateSelectors'
+import React, { useRef } from 'react'
+import { Field, Form, Formik } from 'formik'
+import { useSelector } from 'react-redux'
+import { getMonthsMap, getSelectedDay, getYearsMap } from '../../store/selectors/dateSelectors'
 import moment from 'moment'
-import {useAppDispatch} from '../../hooks/redux'
-import {setSelectedDay} from '../../store/dateSlice'
+import { useAppDispatch } from '../../hooks/redux'
+import { setSelectedDay } from '../../store/dateSlice'
 import styled from 'styled-components'
-import {useOnClickOutside} from 'usehooks-ts'
+import { useOnClickOutside } from 'usehooks-ts'
 
 const DatepickerWrapper = styled('div')`
     margin-top: 5px;

@@ -12,7 +12,8 @@ import Datepicker from '../Datepicker/Datepicker'
 import calendarIcon from '../../assets/icons/calendar-icon.png'
 import {
     AddEventButton,
-    BlockWrapper, ButtonsWrapper,
+    BlockWrapper,
+    ButtonsWrapper,
     DivWrapper,
     ImgWrapper,
     TextWrapper,
@@ -20,7 +21,6 @@ import {
     TodayButton,
     ToggleDayMonth,
 } from './styledHeader'
-
 
 const Header = () => {
     const dispatch = useAppDispatch()
@@ -86,7 +86,7 @@ const Header = () => {
                     Day
                 </ToggleDayMonth>
             </ButtonsWrapper>
-            <BlockWrapper direction="column" width='145'>
+            <BlockWrapper direction="column" width="145">
                 <div>
                     <ButtonWrapper onClick={prevHandler}> &lt; </ButtonWrapper>
                     <TodayButton onClick={todayHandler}>Today</TodayButton>
