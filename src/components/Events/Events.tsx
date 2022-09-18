@@ -17,6 +17,11 @@ const EventListItemWrapper = styled('li')`
 	display: flex;
 `;
 
+const ShowMoreButton = styled(EventItemWrapper)`
+    text-align: center;
+    color: greenyellow;
+`;
+
 const Events = ({events, openAddForm}: Props) => {
 
     const dispatch = useAppDispatch()
@@ -39,9 +44,9 @@ const Events = ({events, openAddForm}: Props) => {
             {
                 events.length > 2 ? (
                     <EventListItemWrapper key="show more">
-                        <EventItemWrapper onClick={() => showEventsInDay(events[0].date)}>
+                        <ShowMoreButton onClick={() => showEventsInDay(events[0].date)}>
                             show more...
-                        </EventItemWrapper>
+                        </ShowMoreButton>
                     </EventListItemWrapper>
                 ) : null
             }

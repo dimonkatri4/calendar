@@ -12,34 +12,15 @@ import Datepicker from '../Datepicker/Datepicker'
 import calendarIcon from '../../assets/icons/calendar-icon.png'
 import {
     AddEventButton,
-    BlockWrapper,
+    BlockWrapper, ButtonsWrapper,
     DivWrapper,
     ImgWrapper,
     TextWrapper,
     TitleWrapper,
     TodayButton,
+    ToggleDayMonth,
 } from './styledHeader'
-import styled from 'styled-components'
 
-interface PropsToggleDayMonth {
-    isShowDay: boolean;
-}
-
-const ButtonsWrapper = styled('div')`
-    display: flex;
-    align-items: center;
-`
-
-const ToggleDayMonth =
-    styled(ButtonWrapper) <
-    PropsToggleDayMonth >
-    `
-    min-width: 70px;
-    margin-right: 5px;
-    ${(props) =>
-        props.isShowDay &&
-        'background-color: rgb(39, 40, 42); color: rgb(164, 166, 169); cursor: default'};
-`
 
 const Header = () => {
     const dispatch = useAppDispatch()
@@ -105,7 +86,7 @@ const Header = () => {
                     Day
                 </ToggleDayMonth>
             </ButtonsWrapper>
-            <BlockWrapper direction="column">
+            <BlockWrapper direction="column" width='145'>
                 <div>
                     <ButtonWrapper onClick={prevHandler}> &lt; </ButtonWrapper>
                     <TodayButton onClick={todayHandler}>Today</TodayButton>
